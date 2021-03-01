@@ -1,5 +1,5 @@
 --
--- File generated with SQLiteStudio v3.2.1 on Mon Mar 1 10:40:59 2021
+-- File generated with SQLiteStudio v3.2.1 on Mon Mar 1 17:07:15 2021
 --
 -- Text encoding used: UTF-8
 --
@@ -49,6 +49,61 @@ INSERT INTO Post (
                  )
                  VALUES (
                      3,
+                     'talha@abc.com',
+                     'Message3'
+                 );
+
+INSERT INTO Post (
+                     id,
+                     user_email,
+                     post_message
+                 )
+                 VALUES (
+                     4,
+                     'talha@abc.com',
+                     'Message3'
+                 );
+
+INSERT INTO Post (
+                     id,
+                     user_email,
+                     post_message
+                 )
+                 VALUES (
+                     5,
+                     'talha@abc.com',
+                     'Message3'
+                 );
+
+INSERT INTO Post (
+                     id,
+                     user_email,
+                     post_message
+                 )
+                 VALUES (
+                     6,
+                     'talha@abc.com',
+                     'Message3'
+                 );
+
+INSERT INTO Post (
+                     id,
+                     user_email,
+                     post_message
+                 )
+                 VALUES (
+                     7,
+                     'talha@abc.com',
+                     'Message3'
+                 );
+
+INSERT INTO Post (
+                     id,
+                     user_email,
+                     post_message
+                 )
+                 VALUES (
+                     8,
                      'talha@abc.com',
                      'Message3'
                  );
@@ -162,6 +217,63 @@ INSERT INTO User (
                      '1234567890'
                  );
 
+INSERT INTO User (
+                     email,
+                     first_name,
+                     last_name,
+                     city,
+                     country,
+                     gender,
+                     password
+                 )
+                 VALUES (
+                     'talha3@abc.com',
+                     'talha',
+                     'talha',
+                     'Sweden',
+                     'linkoping',
+                     'male',
+                     '1234567890'
+                 );
+
+INSERT INTO User (
+                     email,
+                     first_name,
+                     last_name,
+                     city,
+                     country,
+                     gender,
+                     password
+                 )
+                 VALUES (
+                     'talha4@abc.com',
+                     'talha',
+                     'talha',
+                     'Sweden',
+                     'linkoping',
+                     'male',
+                     '1234567890'
+                 );
+
+INSERT INTO User (
+                     email,
+                     first_name,
+                     last_name,
+                     city,
+                     country,
+                     gender,
+                     password
+                 )
+                 VALUES (
+                     'talha8@abc.com',
+                     'talha',
+                     'talha',
+                     'Sweden',
+                     'linkoping',
+                     'male',
+                     '1234567890'
+                 );
+
 
 -- Table: UserSession
 CREATE TABLE UserSession (
@@ -181,7 +293,7 @@ INSERT INTO UserSession (
                         VALUES (
                             1,
                             '12345',
-                            'logedOut',
+                            'logedIn',
                             'talha@abc.com'
                         );
 
@@ -197,6 +309,70 @@ INSERT INTO UserSession (
                             'logedOut',
                             'talha1@abc.com'
                         );
+
+INSERT INTO UserSession (
+                            id,
+                            token,
+                            status,
+                            user_email
+                        )
+                        VALUES (
+                            3,
+                            '3a3fa95b',
+                            'logedOut',
+                            'talha@abc.com'
+                        );
+
+INSERT INTO UserSession (
+                            id,
+                            token,
+                            status,
+                            user_email
+                        )
+                        VALUES (
+                            4,
+                            'fdd17928',
+                            'logedOut',
+                            'talha@abc.com'
+                        );
+
+INSERT INTO UserSession (
+                            id,
+                            token,
+                            status,
+                            user_email
+                        )
+                        VALUES (
+                            5,
+                            '0f8d703f',
+                            'logedOut',
+                            'talha@abc.com'
+                        );
+
+INSERT INTO UserSession (
+                            id,
+                            token,
+                            status,
+                            user_email
+                        )
+                        VALUES (
+                            6,
+                            '927e49da',
+                            'logedOut',
+                            'talha@abc.com'
+                        );
+
+
+-- Trigger: on_insert_new_token
+CREATE TRIGGER on_insert_new_token
+        BEFORE INSERT
+            ON UserSession
+      FOR EACH ROW
+BEGIN
+    UPDATE UserSession
+       SET status = 'logedOut'
+     WHERE user_email = new.user_email;
+END;
 
 
 COMMIT TRANSACTION;
