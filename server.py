@@ -41,11 +41,7 @@ def SignIn():
     if 'email' in data and 'password' in data:
         try:
             result = database_handler.sign_in(data['email'], data['password'])
-            #if (result == True):
-                #return jsonify({"msg": "User Signin Sucessfully."}), 200
             return jsonify({"token": result}), 200
-            # else:
-            #     return jsonify({"msg": "Wrong email or password please try again."}), 400
         except Exception as e:
             print("e ",e)
             if(str(e.args[0])== 'Incorrect Password' ):
@@ -93,7 +89,6 @@ def GetUserDataByTocken():
     if 'Token' in data:
         try:
             result = database_handler.get_user_data_by_token(data['Token'])
-            # if(result == ):
             x = {
                 "email": result[0][0],
                 "first_name": result[0][1],
@@ -106,10 +101,7 @@ def GetUserDataByTocken():
             return result, 200
         except Exception as e:
             print("something-", e)            
-            #if(str(e.args[0])== e.args[0] ):
             return jsonify({"msg": str(e.args[0])}), 401
-        # return jsonify({"msg": "Something went wrong."}), 500
-
     else:
         return jsonify({"msg": "Not good data."}), 400
 
@@ -177,8 +169,6 @@ def GetUserMessageByEmail():
         except Exception as e:
             if(str(e.args[0])=='invalid token / logIn First'):
                 return jsonify({"msg": "Inavlid token / please login first"}), 401
-            # elif (str(e.args[0])=='Token is Invalid'):
-            #     return jsonify({"msg": "Tocken is Invalid."}), 401
             return jsonify({"msg": "Something went wrong."}), 500
     else:
         return jsonify({"msg": "Not good data."}), 400
@@ -198,8 +188,6 @@ def PostMessage():
             print("e is:",e)
             if(str(e.args[0])=='invalid token / logIn First'):
                 return jsonify({"msg": "Inavlid token / please login first"}), 401
-            # elif (str(e.args[0])=='Token is Invalid'):
-            #     return jsonify({"msg": "Tocken is Invalid."}), 401
             return jsonify({"msg": "Something went wrong."}), 500
     else:
         return jsonify({"msg": "Not good data."}), 400
