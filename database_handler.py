@@ -1,6 +1,7 @@
 import sqlite3
 from flask import g
 from uuid import uuid4
+import random
 
 
 DATABASE_URI = "D:\\sqlite3\\SQLiteStudio\\twidder"
@@ -28,9 +29,7 @@ def sign_in(email, password):
     currentPassword = str(currentPassword)
     if password == currentPassword:
         rand_token = str(uuid4())
-        # just get the first part of the generated token,so instead of (XXXXXX-XXXXXX-XXXXX-XXXX)
-        # we get the first part only
-        rand_token = rand_token[0:rand_token.find("-")]
+        rand_token = generate_token() #rand_token[0:rand_token.find("-")]
         print("token ", rand_token)
         status = "logedIn"
         get_db().execute("insert into UserSession(token,user_email,status) values (?,?,?);",
@@ -153,3 +152,13 @@ def check_token_validaty(token):
     token_status = convert_cursor_with_single_value_to_string(token_status)
     token_status = str(token_status)
     return token_status
+
+def generate_token():
+    TOKEN_LENGTH = 20
+    TOKEN_STRING = "abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ"
+    token = ""
+
+    for i in range(0, TOKEN_LENGTH):
+        token += TOKEN_STRING[random.randint(0, len(TOKEN_STRING)-1)]
+
+    return token

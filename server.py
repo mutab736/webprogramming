@@ -22,17 +22,17 @@ def SignUp():
         try:
             result = database_handler.sign_up(data['email'], data['first_name'], data['last_name'], data['gender'], data['country'], data['city'], data['password'])
             if (result == True):
-                return jsonify({"msg": "User Created Successfully"}), 200
+                return "", 201   # user created sucessfully
             else:
-                return jsonify({"msg": "Something went wrong."}), 500
+                return "", 500  #Something went wrong on database
         except Exception as e:
             if(str(e.args[0])=='UNIQUE constraint failed: User.email'):
-                return jsonify({"msg": "Email already exist."}), 400
+                return "", 409   #Email already exist.
             else:
-                return jsonify({"msg": "Something went wrong."}), 500
+                return "", 500  #Something went wrong
 
     else:
-        return jsonify({"msg": "Not good data."}), 400
+        return "", 400 #Not good data.
 
 
 @app.route('/signin', methods=['POST'])
@@ -44,12 +44,12 @@ def SignIn():
             return jsonify({"token": result}), 200
         except Exception as e:
             print("e ",e)
-            if(str(e.args[0])== 'Incorrect Password' ):
-                return jsonify({"msg": "Incorrect Password."}), 401
+            if(str(e.args[0])== 'Incorrect Password'):
+                return "", 401 #Incorrect Password
             else:
-                return jsonify({"msg": "Something went wrong."}), 500
+                return "", 500 #Something went wrong.
     else:
-        return jsonify({"msg": "Not good data."}), 400
+        return "", 400 #Not good data
 
 @app.route('/signout', methods=['GET'])
 def SignOut():
@@ -58,11 +58,11 @@ def SignOut():
         print("token",data['Token'])
         result = database_handler.sign_out(data['Token'])
         if (result == True):
-            return jsonify({"msg": "User Signout Sucessfully."}), 200
+            return "", 200 #User Signout Sucessfully.
         else:
-            return jsonify({"msg": "invalid token / Login First."}), 401
+            return "", 401 #invalid token / Login First.
     else:
-        return jsonify({"msg": "Not good data."}), 400
+        return "", 400 #Not good data.
 
 
 @app.route('/changepassword', methods=['POST'])
@@ -72,16 +72,16 @@ def ChangePassword():
     if 'Token' in h_data and 'oldPassword' in data and 'newPassword' in data:
         result = database_handler.change_password(h_data['Token'], data['oldPassword'], data['newPassword'])
         if (result == "success"):
-            return jsonify({"msg": "Password Changed Sucessfully."}), 200
+            return "", 200 #Password Changed Sucessfully
         elif(result == "password is incorrect"):
-            return jsonify({"msg": "Your Password is inncorrect."}), 401
+            return "", 401 #Your Password is inncorrect
         elif(result == "Login First"):
-            return jsonify({"msg": "You are logged out please login first."}), 401
+            return "", 401  #You are logged out please login first.
         else:
-            return jsonify({"msg": "Something went wrong."}), 500
+            return "", 500 #Something went wrong
 
     else:
-        return jsonify({"msg": "Not good data."}), 400
+        return "", 400 #Not good data.
 
 @app.route('/getuserdatabytoken', methods=['GET'])
 def GetUserDataByTocken():
@@ -101,9 +101,9 @@ def GetUserDataByTocken():
             return result, 200
         except Exception as e:
             print("something-", e)            
-            return jsonify({"msg": str(e.args[0])}), 401
+            return "", 401 #invalid token
     else:
-        return jsonify({"msg": "Not good data."}), 400
+        return "", 400 #Not good data
 
 @app.route('/getuserdatabyemail', methods=['POST'])
 def GetUserDataByEmail():
@@ -126,11 +126,11 @@ def GetUserDataByEmail():
     
         except Exception as e:
             if(str(e.args[0])=='invalid token / logIn First'):
-                return jsonify({"msg": "Inavlid token / please login first."}), 401
-            return jsonify({"msg": str(e.args[0])}), 401
+                return "", 401 #Inavlid token / please login first.
+            return "", 500 #Server side probelm
 
     else:
-        return jsonify({"msg": "Not good data."}), 400
+        return "", 400 #Not good data
 
 
 @app.route('/getusermessagebytoken', methods=['GET'])
@@ -147,12 +147,12 @@ def GetUserMessageByToken():
     
         except Exception as e:
             if(str(e.args[0])=='invalid token / logIn First'):
-                return jsonify({"msg": "Inavlid token / please login first."}), 401
+                return "", 401  #Inavlid token / please login first.
             elif (str(e.args[0])=='Token is Invalid'):
-                return jsonify({"msg": "Tocken is Invalid."}), 401
-            return jsonify({"msg": "Something went wrong."}), 500
+                return "", 401 #Tocken is Invalid.
+            return "", 500  #Something went wrong.
     else:
-        return jsonify({"msg": "Not good data."}), 400
+        return "", 400 #Not good data
 
 
 @app.route('/getusermessagebyemail', methods=['POST'])
@@ -168,10 +168,10 @@ def GetUserMessageByEmail():
     
         except Exception as e:
             if(str(e.args[0])=='invalid token / logIn First'):
-                return jsonify({"msg": "Inavlid token / please login first"}), 401
-            return jsonify({"msg": "Something went wrong."}), 500
+                return "", 401 #Inavlid token / please login first
+            return "", 500 #Something went wrong
     else:
-        return jsonify({"msg": "Not good data."}), 400
+        return "", 400  #Not good data.
 
 
 @app.route('/postmessage', methods=['POST'])
@@ -182,15 +182,15 @@ def PostMessage():
         try:
             result = database_handler.post_message(h_data['Token'], data['email'], data['message'])
             
-            return jsonify({"msg": "message posted successfully."}), 200
+            return "", 200  #Message posted successfully
     
         except Exception as e:
             print("e is:",e)
             if(str(e.args[0])=='invalid token / logIn First'):
-                return jsonify({"msg": "Inavlid token / please login first"}), 401
-            return jsonify({"msg": "Something went wrong."}), 500
+                return "", 401  #Inavlid token / please login first
+            return "", 500 #Something went wrong.
     else:
-        return jsonify({"msg": "Not good data."}), 400
+        return "", 400 #Not good data
 
 
 #util methods
@@ -209,6 +209,7 @@ def convert_resultset_to_Json(resultSet):
                 }
         json_array.append(x)
         return json_array
+
 
 
 if __name__ == '__main__':
