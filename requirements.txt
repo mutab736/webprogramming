@@ -11,7 +11,6 @@ backports.functools-lru-cache==1.4
 backports.shutil-get-terminal-size==1.0.0
 beautifulsoup4==4.6.0
 bleach==2.1.2
-cajarename==17.3.28
 catkin-pkg==0.4.23
 catkin-pkg-modules==0.4.23
 catkin-tools==0.6.1
